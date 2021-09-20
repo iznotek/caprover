@@ -168,17 +168,17 @@ class ServiceManager {
                     .then(function (app) {
                         const envVars = app.envVars || []
 
-                        const includesGitCommitEnvVar = envVars.find(
+                        const includesVCSCommitEnvVar = envVars.find(
                             (envVar) =>
-                                envVar.key === CaptainConstants.gitShaEnvVarKey
+                                envVar.key === CaptainConstants.vcsShaEnvVarKey
                         )
-                        const gitHash =
-                            source.captainDefinitionContentSource?.gitHash ||
-                            source.uploadedTarPathSource?.gitHash
-                        if (gitHash && !includesGitCommitEnvVar) {
+                        const vcsHash =
+                            source.captainDefinitionContentSource?.vcsHash ||
+                            source.uploadedTarPathSource?.vcsHash
+                        if (vcsHash && !includesVCSCommitEnvVar) {
                             envVars.push({
-                                key: CaptainConstants.gitShaEnvVarKey,
-                                value: gitHash,
+                                key: CaptainConstants.vcsShaEnvVarKey,
+                                value: vcsHash,
                             })
                         }
 

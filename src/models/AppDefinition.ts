@@ -20,7 +20,12 @@ interface IAppPort {
     publishMode?: 'ingress' | 'host'
 }
 
+enum RepoType{
+    git = 'git',
+    fossil = 'fossil'
+}
 interface RepoInfo {
+    type: RepoType
     repo: string
     branch: string
     user: string
@@ -29,6 +34,7 @@ interface RepoInfo {
 }
 
 interface RepoInfoEncrypted {
+    type: RepoType
     repo: string
     branch: string
     user: string
@@ -40,7 +46,7 @@ interface IAppVersion {
     version: number
     deployedImageName?: string // empty if the deploy is not completed
     timeStamp: string
-    gitHash: string | undefined
+    vcsHash: string | undefined
 }
 
 interface IAppCustomDomain {

@@ -291,6 +291,7 @@ class AppsDataStore {
                         pushWebhookToken:
                             appSave.appPushWebhook.pushWebhookToken,
                         repoInfo: {
+                            type: repo.type,
                             repo: repo.repo,
                             user: repo.user,
                             password: repo.passwordEncrypted
@@ -518,7 +519,7 @@ class AppsDataStore {
                     const element = versions[i]
                     if (element.version === deployedVersion) {
                         element.deployedImageName = builtImage.imageName
-                        element.gitHash = builtImage.gitHash
+                        element.vcsHash = builtImage.vcsHash
                         found = true
                         break
                     }
@@ -572,7 +573,7 @@ class AppsDataStore {
 
             versions.push({
                 version: newVersionIndex,
-                gitHash: undefined,
+                vcsHash: undefined,
                 timeStamp: new Date().toISOString(),
             })
 
@@ -645,6 +646,7 @@ class AppsDataStore {
                             ? appObj.appPushWebhook.pushWebhookToken
                             : '',
                         repoInfo: {
+                            type: repoInfo.type,
                             repo: repoInfo.repo,
                             user: repoInfo.user,
                             branch: repoInfo.branch,

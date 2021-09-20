@@ -44,6 +44,7 @@ import { IBuiltImage } from '../models/IBuiltImage'
 import { AnyError } from '../models/OtherTypes'
 import CaptainConstants from '../utils/CaptainConstants'
 import GitHelper from '../utils/GitHelper'
+import FossilHelper from '../utils/FossilHelper'
 import BuildLog from './BuildLog'
 import DockerRegistryHelper from './DockerRegistryHelper'
 import TemplateHelper from './TemplateHelper'
@@ -102,7 +103,7 @@ export default class ImageMaker {
         logs.log(`------------------------- ${new Date()}`)
         logs.log(`Build started for ${appName}`)
 
-        let gitHash = ''
+        let vcsHash = ''
 
         const baseDir = self.getDirectoryForRawSource(appName, appVersion)
         const rawDir = `${baseDir}/${RAW_SOURCE_DIRECTORY}`
@@ -121,8 +122,8 @@ export default class ImageMaker {
                     captainDefinitionRelativeFilePath
                 )
             })
-            .then(function (gitHashFromImageSource) {
-                gitHash = gitHashFromImageSource
+            .then(function (vcsHashFromImageSource) {
+                vcsHash = vcsHashFromImageSource
                 // some users convert the directory into TAR instead of converting the content into TAR.
                 // we go one level deep and try to find the right directory.
                 // Also, they may have no captain-definition file, in that case, fall back to Dockerfile if exists.
@@ -217,7 +218,7 @@ export default class ImageMaker {
                 logs.log(`Build has finished successfully!`)
                 return {
                     imageName: fullImageName,
-                    gitHash: gitHash,
+                    vcsHash: vcsHash,
                 }
             })
             .catch(function (error) {
@@ -281,7 +282,7 @@ export default class ImageMaker {
 
     /**
      * Extracts the content of IImageSource into destDirectory and returns a promise that resolvea
-     * to git hash that was provided in IImageSource
+     * to vcs hash that was provided in IImageSource
      *
      * @param source        the image source
      * @param destDirectory the path to directory where we want to have all our contents
@@ -313,23 +314,36 @@ export default class ImageMaker {
                             cwd: destDirectory,
                         })
                         .then(function () {
-                            return srcTar.gitHash
+                            return srcTar.vcsHash
                         })
                 }
 
                 const srcRepo = source.repoInfoSource
                 if (srcRepo) {
-                    return GitHelper.clone(
-                        srcRepo.user,
-                        srcRepo.password,
-                        srcRepo.sshKey || '',
-                        srcRepo.repo,
-                        srcRepo.branch,
-                        destDirectory
-                    ) //
-                        .then(function () {
-                            return GitHelper.getLastHash(destDirectory)
-                        })
+                    if (srcRepo.type == 'git')
+                        return GitHelper.clone(
+                            srcRepo.user,
+                            srcRepo.password,
+                            srcRepo.sshKey || '',
+                            srcRepo.repo,
+                            srcRepo.branch,
+                            destDirectory
+                        ) //
+                            .then(function () {
+                                return GitHelper.getLastHash(destDirectory)
+                            })
+                    if (srcRepo.type == 'fossil')
+                        return FossilHelper.clone(
+                            srcRepo.user,
+                            srcRepo.password,
+                            srcRepo.sshKey || '',
+                            srcRepo.repo,
+                            srcRepo.branch,
+                            destDirectory
+                        ) //
+                            .then(function () {
+                                return FossilHelper.getLastHash(destDirectory)
+                            })
                 }
 
                 const captainDefinitionContentSource =
@@ -344,7 +358,7 @@ export default class ImageMaker {
                             captainDefinitionContentSource.captainDefinitionContent
                         )
                         .then(function () {
-                            return captainDefinitionContentSource.gitHash
+                            return captainDefinitionContentSource.vcsHash
                         })
                 }
                 // we should never get here!

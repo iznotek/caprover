@@ -1,8 +1,8 @@
 interface IImageSource {
-    uploadedTarPathSource?: { uploadedTarPath: string; gitHash: string }
+    uploadedTarPathSource?: { uploadedTarPath: string; vcsHash: string }
     captainDefinitionContentSource?: {
         captainDefinitionContent: string
-        gitHash: string
+        vcsHash: string
     }
     repoInfoSource?: RepoInfo
 }

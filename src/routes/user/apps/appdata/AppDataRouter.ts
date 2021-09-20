@@ -81,7 +81,7 @@ router.post(
         const isDetachedBuild = !!req.query.detached
         const captainDefinitionContent =
             (req.body.captainDefinitionContent || '') + ''
-        const gitHash = (req.body.gitHash || '') + ''
+        const vcsHash = (req.body.vcsHash || '') + ''
         let tarballSourceFilePath: string = !!req.file ? req.file.path : ''
 
         if (!!tarballSourceFilePath === !!captainDefinitionContent) {
@@ -101,13 +101,13 @@ router.post(
                     uploadedTarPathSource: !!tarballSourceFilePath
                         ? {
                               uploadedTarPath: tarballSourceFilePath,
-                              gitHash,
+                              vcsHash,
                           }
                         : undefined,
                     captainDefinitionContentSource: !!captainDefinitionContent
                         ? {
                               captainDefinitionContent,
-                              gitHash,
+                              vcsHash,
                           }
                         : undefined,
                 }

@@ -7,6 +7,11 @@ import Authenticator from '../user/Authenticator'
 import CaptainConstants from './CaptainConstants'
 import Logger from './Logger'
 
+enum RepoType{
+    git = 'git',
+    fossil = 'fossil'
+}
+
 export default class MigrateCaptainDuckDuck {
     private oldFilePath: string
     private oldData: any
@@ -221,6 +226,7 @@ export default class MigrateCaptainDuckDuck {
                             }
 
                             const repoInfo = {
+                                type: 'git' as RepoType,
                                 user: '',
                                 password: '',
                                 sshKey: '',
@@ -284,7 +290,7 @@ export default class MigrateCaptainDuckDuck {
                                                 timeStamp:
                                                     element.timeStamp || '',
                                                 version: thisVersion,
-                                                gitHash: element.gitHash,
+                                                vcsHash: element.gitHash,
                                                 deployedImageName,
                                             })
                                         }
@@ -292,7 +298,7 @@ export default class MigrateCaptainDuckDuck {
                                         newVers.push({
                                             timeStamp: element.timeStamp || '',
                                             version: thisVersion,
-                                            gitHash: element.gitHash,
+                                            vcsHash: element.gitHash,
                                             deployedImageName,
                                         })
                                     })
