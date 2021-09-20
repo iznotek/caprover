@@ -2,6 +2,7 @@ import { ImageInfo } from 'dockerode'
 import ApiStatusCodes from '../api/ApiStatusCodes'
 import DataStore from '../datastore/DataStore'
 import DockerApi, { IDockerUpdateOrders } from '../docker/DockerApi'
+import { PreDeployFunction } from '../models/OtherTypes'
 import CaptainConstants from '../utils/CaptainConstants'
 import Logger from '../utils/Logger'
 import Utils from '../utils/Utils'
@@ -91,7 +92,7 @@ class ServiceManager {
     scheduleDeployNewVersion(appName: string, source: IImageSource) {
         const self = this
 
-        let activeBuildAppName = self.isAnyBuildRunning()
+        const activeBuildAppName = self.isAnyBuildRunning()
         this.activeOrScheduledBuilds[appName] = true
 
         self.buildLogsManager.getAppBuildLogs(appName).clear()
@@ -128,13 +129,13 @@ class ServiceManager {
                     `An active build (${activeBuildAppName}) is in progress. This build is queued...`
                 )
 
-            let promiseToSave: QueuedPromise = {
+            const promiseToSave: QueuedPromise = {
                 resolve: undefined,
                 reject: undefined,
                 promise: undefined,
             }
 
-            let promise = new Promise(function (resolve, reject) {
+            const promise = new Promise(function (resolve, reject) {
                 promiseToSave.resolve = resolve
                 promiseToSave.reject = reject
             })
@@ -218,7 +219,7 @@ class ServiceManager {
         self.activeOrScheduledBuilds[appName] = false
 
         Promise.resolve().then(function () {
-            let newBuild = self.queuedBuilds.shift()
+            const newBuild = self.queuedBuilds.shift()
             if (newBuild)
                 self.startDeployingNewVersion(newBuild.appName, newBuild.source)
         })
@@ -612,7 +613,9 @@ class ServiceManager {
         })
     }
 
-    createPreDeployFunctionIfExist(app: IAppDef): Function | undefined {
+    createPreDeployFunctionIfExist(
+        app: IAppDef
+    ): PreDeployFunction | undefined {
         let preDeployFunction = app.preDeployFunction
 
         if (!preDeployFunction) {
@@ -664,7 +667,8 @@ class ServiceManager {
         customNginxConfig: string,
         preDeployFunction: string,
         serviceUpdateOverride: string,
-        websocketSupport: boolean
+        websocketSupport: boolean,
+        appDeployTokenConfig: AppDeployTokenConfig
     ) {
         const self = this
         const dataStore = this.dataStore
@@ -747,7 +751,7 @@ class ServiceManager {
                 }
             })
             .then(function () {
-                serviceUpdateOverride = !!serviceUpdateOverride
+                serviceUpdateOverride = serviceUpdateOverride
                     ? `${serviceUpdateOverride}`.trim()
                     : ''
                 if (!serviceUpdateOverride) {
@@ -783,7 +787,8 @@ class ServiceManager {
                         customNginxConfig,
                         preDeployFunction,
                         serviceUpdateOverride,
-                        websocketSupport
+                        websocketSupport,
+                        appDeployTokenConfig
                     )
             })
             .then(function () {
@@ -806,7 +811,7 @@ class ServiceManager {
         const activeBuilds = this.activeOrScheduledBuilds
 
         for (const appName in activeBuilds) {
-            if (!!activeBuilds[appName]) {
+            if (activeBuilds[appName]) {
                 return appName
             }
         }
@@ -820,8 +825,8 @@ class ServiceManager {
         return {
             isAppBuilding: self.isAppBuilding(appName),
             logs: self.buildLogsManager.getAppBuildLogs(appName).getLogs(),
-            isBuildFailed: self.buildLogsManager.getAppBuildLogs(appName)
-                .isBuildFailed,
+            isBuildFailed:
+                self.buildLogsManager.getAppBuildLogs(appName).isBuildFailed,
         }
     }
 
