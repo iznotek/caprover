@@ -3,7 +3,8 @@ import { isDeepStrictEqual } from 'util'
 import { RestoringInfo } from '../src/models/BackupMeta'
 import BackupManager from '../src/user/system/BackupManager'
 import CaptainConstants from '../src/utils/CaptainConstants'
-const BACKUP_FILE_PATH_ABSOLUTE = '/captain/backup.tar'
+const CAPTAIN_ROOT = process.platform == 'darwin' ? '/var/captain' : '/captain'
+const BACKUP_FILE_PATH_ABSOLUTE = CAPTAIN_ROOT + '/backup.tar'
 
 function cleanup() {
     return Promise.resolve()

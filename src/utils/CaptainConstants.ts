@@ -2,7 +2,10 @@ import fs = require('fs-extra')
 import path = require('path')
 import EnvVars from './EnvVars'
 
-const CAPTAIN_BASE_DIRECTORY = '/captain'
+// Here detect the presence of '/var/captain' 
+// instead of process.platform to support Dockerfile.debug on darwin host
+const CAPTAIN_BASE_DIRECTORY = fs.existsSync('/var/captain') ? '/var/captain' : '/captain' 
+
 const CAPTAIN_DATA_DIRECTORY = CAPTAIN_BASE_DIRECTORY + '/data' // data that sits here can be backed up
 const CAPTAIN_ROOT_DIRECTORY_TEMP = CAPTAIN_BASE_DIRECTORY + '/temp'
 const CAPTAIN_ROOT_DIRECTORY_GENERATED = CAPTAIN_BASE_DIRECTORY + '/generated'

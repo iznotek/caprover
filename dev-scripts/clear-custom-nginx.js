@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
 
 const fs = require('fs-extra');
-const CONFIG_FILE_PATH = '/captain/data/config-captain.json';
+const CAPTAIN_ROOT = process.platform == 'darwin' ? '/var/captain' : '/captain'
+const CONFIG_FILE_PATH = `${CAPTAIN_ROOT}/data/config-captain.json`;
 
 const fileContent = JSON.parse(fs.readFileSync(CONFIG_FILE_PATH, {
     encoding: 'utf-8'
