@@ -169,20 +169,6 @@ class ServiceManager {
                     .then(function (app) {
                         const envVars = app.envVars || []
 
-                        const includesVCSCommitEnvVar = envVars.find(
-                            (envVar) =>
-                                envVar.key === CaptainConstants.vcsShaEnvVarKey
-                        )
-                        const vcsHash =
-                            source.captainDefinitionContentSource?.vcsHash ||
-                            source.uploadedTarPathSource?.vcsHash
-                        if (vcsHash && !includesVCSCommitEnvVar) {
-                            envVars.push({
-                                key: CaptainConstants.vcsShaEnvVarKey,
-                                value: vcsHash,
-                            })
-                        }
-
                         return self.imageMaker.ensureImage(
                             source,
                             appName,

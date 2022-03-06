@@ -124,6 +124,18 @@ export default class ImageMaker {
             })
             .then(function (vcsHashFromImageSource) {
                 vcsHash = vcsHashFromImageSource
+
+                const includesVcsCommitEnvVar = envVars.find(
+                    (envVar) => envVar.key === CaptainConstants.vcsShaEnvVarKey
+                )
+
+                if (a && !includesVcsCommitEnvVar) {
+                    envVars.push({
+                        key: CaptainConstants.vcsShaEnvVarKey,
+                        value: vcsHash,
+                    })
+                }
+
                 // some users convert the directory into TAR instead of converting the content into TAR.
                 // we go one level deep and try to find the right directory.
                 // Also, they may have no captain-definition file, in that case, fall back to Dockerfile if exists.
