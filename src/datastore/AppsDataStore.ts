@@ -537,6 +537,7 @@ class AppsDataStore {
                     const element = versions[i]
                     if (element.version === deployedVersion) {
                         element.deployedImageName = builtImage.imageName
+                        element.deployedDockerFile = builtImage.dockerFile
                         element.vcsHash = builtImage.vcsHash
                         found = true
                         break

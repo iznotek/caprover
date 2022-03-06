@@ -45,6 +45,7 @@ interface RepoInfoEncrypted {
 interface IAppVersion {
     version: number
     deployedImageName?: string // empty if the deploy is not completed
+    deployedDockerFile?: string // empty if the deploy is not completed
     timeStamp: string
     vcsHash: string | undefined
 }

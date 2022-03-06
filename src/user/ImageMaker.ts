@@ -104,8 +104,6 @@ export default class ImageMaker {
         logs.log(`------------------------- ${new Date()}`)
         logs.log(`Build started for ${appName}`)
 
-        let vcsHash = ''
-
         const baseDir = self.getDirectoryForRawSource(appName, appVersion)
         const rawDir = `${baseDir}/${RAW_SOURCE_DIRECTORY}`
         const tarFilePath = `${baseDir}/${TAR_FILE_NAME_READY_FOR_DOCKER}`
@@ -113,7 +111,10 @@ export default class ImageMaker {
         const baseImageNameWithoutVerAndReg = `img-${this.namespace}-${
             appName // img-captain-myapp
         }`
+
         let fullImageName = '' // repo.domain.com:998/username/reponame:8
+        let fullDockerFile = ''
+        let vcsHash = ''
 
         return Promise.resolve() //
             .then(function () {
@@ -178,6 +179,14 @@ export default class ImageMaker {
                                 })
                         }
 
+                        self.getDockerfileContent(
+                            captainDefinition,
+                            path.dirname(captainDefinitionAbsolutePath),
+                        )
+                        .then(function (dockerfileContent) {
+                            fullDockerFile = dockerfileContent
+                        })
+
                         return self.getBuildPushAndReturnImageName(
                             captainDefinition,
                             path.dirname(captainDefinitionAbsolutePath),
@@ -232,6 +241,7 @@ export default class ImageMaker {
                 logs.log(`Build has finished successfully!`)
                 return {
                     imageName: fullImageName,
+                    dockerFile: fullDockerFile,
                     vcsHash: vcsHash,
                 }
             })
@@ -448,6 +458,22 @@ export default class ImageMaker {
         captainDefinition: ICaptainDefinition,
         directoryWithCaptainDefinition: string
     ) {
+        return this.getDockerfileContent(
+                captainDefinition,
+                directoryWithCaptainDefinition
+            )
+            .then(function (dockerfileContent) {
+                return fs.outputFile(
+                    `${directoryWithCaptainDefinition}/${DOCKER_FILE}`,
+                    dockerfileContent
+                )
+            })
+    }
+
+    private getDockerfileContent(
+        captainDefinition: ICaptainDefinition,
+        directoryWithCaptainDefinition: string
+    ) {
         return Promise.resolve() //
             .then(function () {
                 const data = captainDefinition
@@ -484,12 +510,6 @@ export default class ImageMaker {
                         'dockerfileLines, dockerFilePath, templateId or imageName must be present. Both should not be present at the same time'
                     )
                 }
-            })
-            .then(function (dockerfileContent) {
-                return fs.outputFile(
-                    `${directoryWithCaptainDefinition}/${DOCKER_FILE}`,
-                    dockerfileContent
-                )
             })
     }
 

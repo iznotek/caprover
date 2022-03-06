@@ -273,7 +273,7 @@ class DockerApi {
 
                 const optionsForBuild: ImageBuildOptions = {
                     t: imageName,
-                    buildargs: buildargs
+                    buildargs: buildargs,
                     nocache: buildNoCache
                 }
 
