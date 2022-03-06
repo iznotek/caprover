@@ -92,6 +92,7 @@ export default class ImageMaker {
         imageSource: IImageSource,
         appName: string,
         captainDefinitionRelativeFilePath: string,
+        buildNoCache: boolean,
         appVersion: number,
         envVars: IAppEnvVar[]
     ): Promise<IBuiltImage> {
@@ -180,6 +181,7 @@ export default class ImageMaker {
                         return self.getBuildPushAndReturnImageName(
                             captainDefinition,
                             path.dirname(captainDefinitionAbsolutePath),
+                            buildNoCache,
                             tarFilePath,
                             baseImageNameWithoutVerAndReg,
                             appName,
@@ -242,6 +244,7 @@ export default class ImageMaker {
     private getBuildPushAndReturnImageName(
         captainDefinition: ICaptainDefinition,
         correctedDirProvided: string,
+        buildNoCache: boolean,
         tarFilePath: string,
         baseImageNameWithoutVersionAndReg: string,
         appName: string,
@@ -273,7 +276,8 @@ export default class ImageMaker {
                                 tarFilePath,
                                 self.buildLogsManager.getAppBuildLogs(appName),
                                 envVars,
-                                registryConfig
+                                registryConfig,
+                                buildNoCache
                             )
                             .catch(function (error: AnyError) {
                                 throw ApiStatusCodes.createError(

@@ -331,6 +331,7 @@ export default class MigrateCaptainDuckDuck {
                                         '',
                                         Number(app.instanceCount),
                                         CaptainConstants.defaultCaptainDefinitionPath,
+                                        false,
                                         app.envVars || [],
                                         app.volumes || [],
                                         app.nodeId || '',

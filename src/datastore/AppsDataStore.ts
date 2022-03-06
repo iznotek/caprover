@@ -293,6 +293,8 @@ class AppsDataStore {
                     appUnencrypted.captainDefinitionRelativeFilePath ||
                     CaptainConstants.defaultCaptainDefinitionPath
 
+                // TODO: vcsHash added in v1.10.2, replacing gitHash, we need to backfill if it doesn't exists.
+
                 const appSave = allApps[appName] as IAppDefSaved
 
                 if (
@@ -621,6 +623,7 @@ class AppsDataStore {
         description: string,
         instanceCount: number,
         captainDefinitionRelativeFilePath: string,
+        buildNoCache: boolean,
         envVars: IAppEnvVar[],
         volumes: IAppVolume[],
         nodeId: string,
@@ -700,7 +703,7 @@ class AppsDataStore {
                     appObj.captainDefinitionRelativeFilePath =
                         captainDefinitionRelativeFilePath + ''
                 }
-
+                appObj.buildNoCache = !!buildNoCache
                 appObj.notExposeAsWebApp = !!notExposeAsWebApp
                 appObj.containerHttpPort = containerHttpPort
                 appObj.forceSsl = !!forceSsl
@@ -895,6 +898,7 @@ class AppsDataStore {
                 instanceCount: 1,
                 captainDefinitionRelativeFilePath:
                     CaptainConstants.defaultCaptainDefinitionPath,
+                buildNoCache: false,
                 networks: [CaptainConstants.captainNetworkName],
                 envVars: [],
                 volumes: [],

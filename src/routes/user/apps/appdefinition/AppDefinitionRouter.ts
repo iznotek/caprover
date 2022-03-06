@@ -336,6 +336,7 @@ router.post('/update/', function (req, res, next) {
     const nodeId = req.body.nodeId
     const captainDefinitionRelativeFilePath =
         req.body.captainDefinitionRelativeFilePath
+    const buildNoCache = req.body.buildNoCache
     const notExposeAsWebApp = req.body.notExposeAsWebApp
     const customNginxConfig = req.body.customNginxConfig
     const forceSsl = !!req.body.forceSsl
@@ -408,6 +409,7 @@ router.post('/update/', function (req, res, next) {
             description,
             Number(instanceCount),
             captainDefinitionRelativeFilePath,
+            buildNoCache,
             envVars,
             volumes,
             nodeId,

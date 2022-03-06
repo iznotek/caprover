@@ -63,6 +63,7 @@ interface IAppDefinitionBase {
     hasDefaultSubDomainSsl: boolean
     containerHttpPort?: number
     captainDefinitionRelativeFilePath: string
+    buildNoCache: boolean
     forceSsl: boolean
     websocketSupport: boolean
     nodeId?: string

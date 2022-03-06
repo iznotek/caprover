@@ -173,6 +173,7 @@ class ServiceManager {
                             source,
                             appName,
                             app.captainDefinitionRelativeFilePath,
+                            app.buildNoCache,
                             appVersion,
                             envVars
                         )
@@ -675,6 +676,7 @@ class ServiceManager {
         description: string,
         instanceCount: number,
         captainDefinitionRelativeFilePath: string,
+        buildNoCache: boolean,
         envVars: IAppEnvVar[],
         volumes: IAppVolume[],
         nodeId: string,
@@ -794,6 +796,7 @@ class ServiceManager {
                         description,
                         instanceCount,
                         captainDefinitionRelativeFilePath,
+                        buildNoCache,
                         envVars,
                         volumes,
                         nodeId,

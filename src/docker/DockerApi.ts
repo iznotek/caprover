@@ -243,7 +243,8 @@ class DockerApi {
         tarballFilePath: string,
         buildLogs: BuildLog,
         envVars: IAppEnvVar[],
-        registryConfig: DockerRegistryConfig
+        registryConfig: DockerRegistryConfig,
+        buildNoCache: boolean
     ) {
         const self = this
 
@@ -265,9 +266,15 @@ class DockerApi {
                     )
                 }
 
-                const optionsForBuild: Dockerode.ImageBuildOptions = {
+                // FIX Dockerode.ImageBuildOptions with nocache support
+                interface ImageBuildOptions extends Dockerode.ImageBuildOptions {
+                    nocache?: boolean | undefined;
+                }
+
+                const optionsForBuild: ImageBuildOptions = {
                     t: imageName,
-                    buildargs: buildargs,
+                    buildargs: buildargs
+                    nocache: buildNoCache
                 }
 
                 if (Object.keys(registryConfig).length > 0) {
