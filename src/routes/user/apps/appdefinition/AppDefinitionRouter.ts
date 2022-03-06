@@ -307,6 +307,27 @@ router.post('/rename/', function (req, res, next) {
         .catch(ApiStatusCodes.createCatcher(res))
 })
 
+router.post('/toggle/', function (req, res, next) {
+    const serviceManager =
+        InjectionExtractor.extractUserFromInjected(res).user.serviceManager
+
+    const appName = req.body.appName + ''
+
+    Logger.d(`Roggle running state of app: ${appName}`)
+
+    Promise.resolve()
+        .then(function () {
+            return serviceManager.toggleApp(appName)
+        })
+        .then(function () {
+            Logger.d('AppName is toggled')
+            res.send(
+                new BaseApi(ApiStatusCodes.STATUS_OK, 'AppName is toggled')
+            )
+        })
+        .catch(ApiStatusCodes.createCatcher(res))
+})
+
 router.post('/update/', function (req, res, next) {
     const serviceManager =
         InjectionExtractor.extractUserFromInjected(res).user.serviceManager

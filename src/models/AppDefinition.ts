@@ -55,6 +55,7 @@ interface IAppCustomDomain {
 }
 
 interface IAppDefinitionBase {
+    enabled: boolean
     description: string
     deployedVersion: number
     notExposeAsWebApp: boolean

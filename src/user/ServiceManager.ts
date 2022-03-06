@@ -438,6 +438,40 @@ class ServiceManager {
             })
     }
 
+    toggleApp(appName: string) {
+        Logger.d(`Toggling app: ${appName}`)
+        const self = this
+
+        const serviceName = this.dataStore
+            .getAppsDataStore()
+            .getServiceName(appName)
+        const dockerApi = this.dockerApi
+        const dataStore = this.dataStore
+
+        let running = false
+
+        return Promise.resolve()
+            .then(function () {
+                return self.ensureNotBuilding(appName)
+            })
+            .then(function () {
+                Logger.d(`Check if service is running: ${serviceName}`)
+                return dockerApi.isServiceRunningByName(serviceName)
+            })
+            .then(function (isRunning) {
+                running = isRunning
+                if (!isRunning) {
+                    return self.ensureServiceInitedAndUpdated(appName)
+                }
+                return dockerApi.removeServiceByName(serviceName)
+            })
+            .then(function () {
+                return dataStore
+                    .getAppsDataStore()
+                    .enableApp(self.authenticator, appName, !running)
+            })
+    }
+
     removeApp(appName: string) {
         Logger.d(`Removing service for: ${appName}`)
         const self = this

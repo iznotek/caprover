@@ -253,6 +253,23 @@ class AppsDataStore {
             })
     }
 
+    enableApp(
+        authenticator: Authenticator,
+        appName: string,
+        enabled: boolean
+    ) {
+        const self = this
+
+        return Promise.resolve()
+            .then(function () {
+                return self.getAppDefinition(appName)
+            })
+            .then(function (appData) {
+                appData.enabled = enabled;
+                return self.saveApp(appName, appData)
+            })
+    }
+
     getServiceName(appName: string) {
         return `srv-${this.namepace}--${appName}`
     }
@@ -872,6 +889,7 @@ class AppsDataStore {
             }
 
             const defaultAppDefinition: IAppDef = {
+                enabled: true,
                 hasPersistentData: !!hasPersistentData,
                 description: '',
                 instanceCount: 1,
