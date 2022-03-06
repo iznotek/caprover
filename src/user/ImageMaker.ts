@@ -129,7 +129,7 @@ export default class ImageMaker {
                     (envVar) => envVar.key === CaptainConstants.vcsShaEnvVarKey
                 )
 
-                if (a && !includesVcsCommitEnvVar) {
+                if (vcsHash && !includesVcsCommitEnvVar) {
                     envVars.push({
                         key: CaptainConstants.vcsShaEnvVarKey,
                         value: vcsHash,
