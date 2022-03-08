@@ -1,5 +1,11 @@
 ## [Next Version - available as `edge`]
 
+-   New: Fossil repository deploy
+-   New: No cache image build option
+-   New: Mac development support
+-   New: Run/Stop app without need to change instance count
+-   New: Saved DockerFile by image version and get autofill review from Version history row click on deploy method 4 (DockerFile)
+-   Improved: Deployment UI review
 -   Improved: Pulling the new image before attempt to upgrade the CapRover engine to improve reliability of upgrades
 
 ## [1.10.1] - 2021-10-09
