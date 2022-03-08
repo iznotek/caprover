@@ -267,14 +267,15 @@ class DockerApi {
                 }
 
                 // FIX Dockerode.ImageBuildOptions with nocache support
-                interface ImageBuildOptions extends Dockerode.ImageBuildOptions {
-                    nocache?: boolean | undefined;
+                interface ImageBuildOptions
+                    extends Dockerode.ImageBuildOptions {
+                    nocache?: boolean | undefined
                 }
 
                 const optionsForBuild: ImageBuildOptions = {
                     t: imageName,
                     buildargs: buildargs,
-                    nocache: buildNoCache
+                    nocache: buildNoCache,
                 }
 
                 if (Object.keys(registryConfig).length > 0) {

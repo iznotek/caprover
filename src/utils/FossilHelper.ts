@@ -1,8 +1,8 @@
 import * as childPross from 'child_process'
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import simpleGit from 'simple-git';
-import { SimpleGitOptions } from 'simple-git';
+import simpleGit from 'simple-git'
+import { SimpleGitOptions } from 'simple-git'
 import * as util from 'util'
 import * as uuid from 'uuid'
 import CaptainConstants from './CaptainConstants'
@@ -10,13 +10,12 @@ import Logger from './Logger'
 import Utils from './Utils'
 const exec = util.promisify(childPross.exec)
 
-const fossil = simpleGit;
+const fossil = simpleGit
 const options: Partial<SimpleGitOptions> = {
     baseDir: process.cwd(),
     binary: 'fossil',
     maxConcurrentProcesses: 6,
-};
-
+}
 
 export default class FossilHelper {
     static getLastHash(directory: string) {
@@ -36,7 +35,7 @@ export default class FossilHelper {
         const USER = encodeURIComponent(username)
         const PASS = encodeURIComponent(pass)
 
-        if (!!sshKey) {
+        if (sshKey) {
             const SSH_KEY_PATH = path.join(
                 CaptainConstants.captainRootDirectoryTemp,
                 uuid.v4()
@@ -46,9 +45,8 @@ export default class FossilHelper {
             const REPO_FOSSIL_PATH = sanitized.repoPath
             const SSH_PORT = sanitized.port
 
-            const DOMAIN = FossilHelper.getDomainFromSanitizedSshRepoPath(
-                REPO_FOSSIL_PATH
-            )
+            const DOMAIN =
+                FossilHelper.getDomainFromSanitizedSshRepoPath(REPO_FOSSIL_PATH)
 
             Logger.d(`Cloning SSH ${REPO_FOSSIL_PATH}`)
 
@@ -89,12 +87,21 @@ export default class FossilHelper {
 
             const remote = `https://${USER}:${PASS}@${REPO_PATH}`
             Logger.dev(`Cloning HTTPS ${remote}`)
-            return fossil(options)  //
+            return fossil(options) //
                 .silent(true) //
-                .raw(['open', remote, '--repodir', CaptainConstants.captainRootDirectoryTemp, '--workdir', directory])
+                .raw([
+                    'open',
+                    remote,
+                    '--repodir',
+                    CaptainConstants.captainRootDirectoryTemp,
+                    '--workdir',
+                    directory,
+                ])
                 .cwd(directory)
                 .raw(['update', branch])
-                .then(function () {})
+                .then(function () {
+                    //
+                })
         }
     }
 

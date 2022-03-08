@@ -253,11 +253,7 @@ class AppsDataStore {
             })
     }
 
-    enableApp(
-        authenticator: Authenticator,
-        appName: string,
-        enabled: boolean
-    ) {
+    enableApp(authenticator: Authenticator, appName: string, enabled: boolean) {
         const self = this
 
         return Promise.resolve()
@@ -265,7 +261,7 @@ class AppsDataStore {
                 return self.getAppDefinition(appName)
             })
             .then(function (appData) {
-                appData.enabled = enabled;
+                appData.enabled = enabled
                 return self.saveApp(appName, appData)
             })
     }

@@ -20,9 +20,9 @@ interface IAppPort {
     publishMode?: 'ingress' | 'host'
 }
 
-enum RepoType{
+enum RepoType {
     git = 'git',
-    fossil = 'fossil'
+    fossil = 'fossil',
 }
 interface RepoInfo {
     type: RepoType

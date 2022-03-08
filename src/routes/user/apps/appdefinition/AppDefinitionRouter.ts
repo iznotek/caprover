@@ -209,7 +209,7 @@ router.post('/register/', function (req, res, next) {
                 appName,
                 {
                     captainDefinitionContentSource: {
-                        captainDefinitionContent: 
+                        captainDefinitionContent:
                             DEFAULT_APP_CAPTAIN_DEFINITION,
                         vcsHash: '',
                     },

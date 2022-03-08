@@ -181,9 +181,8 @@ export default class ImageMaker {
 
                         self.getDockerfileContent(
                             captainDefinition,
-                            path.dirname(captainDefinitionAbsolutePath),
-                        )
-                        .then(function (dockerfileContent) {
+                            path.dirname(captainDefinitionAbsolutePath)
+                        ).then(function (dockerfileContent) {
                             fullDockerFile = dockerfileContent
                         })
 
@@ -459,15 +458,14 @@ export default class ImageMaker {
         directoryWithCaptainDefinition: string
     ) {
         return this.getDockerfileContent(
-                captainDefinition,
-                directoryWithCaptainDefinition
+            captainDefinition,
+            directoryWithCaptainDefinition
+        ).then(function (dockerfileContent) {
+            return fs.outputFile(
+                `${directoryWithCaptainDefinition}/${DOCKER_FILE}`,
+                dockerfileContent
             )
-            .then(function (dockerfileContent) {
-                return fs.outputFile(
-                    `${directoryWithCaptainDefinition}/${DOCKER_FILE}`,
-                    dockerfileContent
-                )
-            })
+        })
     }
 
     private getDockerfileContent(

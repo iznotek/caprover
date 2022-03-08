@@ -7,9 +7,9 @@ import Authenticator from '../user/Authenticator'
 import CaptainConstants from './CaptainConstants'
 import Logger from './Logger'
 
-enum RepoType{
+enum RepoType {
     git = 'git',
-    fossil = 'fossil'
+    fossil = 'fossil',
 }
 
 export default class MigrateCaptainDuckDuck {
