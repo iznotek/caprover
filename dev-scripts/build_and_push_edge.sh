@@ -18,7 +18,7 @@ fi
 
 
 CAPROVER_VERSION=0.0.1
-IMAGE_NAME=caprover/caprover-edge
+IMAGE_NAME=iznow/caprover-edge
 
 if [ ! -f ./package-lock.json ]; then
     echo "package-lock.json not found!"
@@ -30,7 +30,7 @@ fi
 # On Github the line above does not work, instead:
 BRANCH=${GITHUB_REF##*/}
 echo "on branch $BRANCH"
-if [[ "$BRANCH" != "master" ]]; then
+if [[ "$BRANCH" != "iznow" ]]; then
     echo 'Not on master branch! Aborting script!';
     exit 1;
 fi

@@ -1,5 +1,5 @@
 FROM node:14
-RUN apt-get update && apt-get full-upgrade -yqq && apt-get install build-essential cmake -yqq
+RUN apt-get update && apt-get full-upgrade -yqq && apt-get install build-essential cmake fossil -yqq
 
 RUN apt-get -y install netcat socat
 RUN mkdir -p /usr/src/app

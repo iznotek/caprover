@@ -19,7 +19,7 @@ fi
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 
-IMAGE_NAME=caprover/caprover
+IMAGE_NAME=iznow/caprover
 
 if [ ! -f ./package-lock.json ]; then
     echo "package-lock.json not found!"
