@@ -30,7 +30,7 @@ fi
 # On Github the line above does not work, instead:
 BRANCH=${GITHUB_REF##*/}
 echo "on branch $BRANCH"
-if [[ "$BRANCH" != "iznow" ]]; then
+if [[ "$BRANCH" != "master" ]]; then
     echo 'Not on master branch! Aborting script!';
     exit 1;
 fi
